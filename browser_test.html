@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Nova's Browser Feature Test</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style type="text/css">
+body{font-family:sans-serif;background:#eee;color:#000;margin:8px}h1{font-size:22px}h2{font-size:18px;border-bottom:1px solid #888}.box{background:#fff;border:1px solid #888;padding:6px;margin:6px 0}.yes{color:green;font-weight:bold}.no{color:red;font-weight:bold}#rounded{border:2px solid #000;border-radius:12px;padding:5px}#shadow{box-shadow:3px 3px 5px #777;padding:5px}#transform{width:100px;background:#ddd;transform:rotate(3deg)}#gradient{height:30px;background:linear-gradient(to right,red,blue)}#flex{display:flex}#flex div{border:1px solid #000;padding:3px}
+</style>
+</head><body>
+<h1>Browser Feature Test</h1>
+<p>for old, new, weird, and questionable browsers :P</p>
+<div class="box"><b>JavaScript:</b> <span id="js" class="no">NOT RUNNING</span></div>
+<noscript><div class="box"><b>JavaScript is disabled or unsupported.</b></div></noscript>
+<h2>Browser Info</h2><div class="box"><b>User Agent:</b><br><span id="ua">JavaScript required</span><br><br><b>Platform:</b> <span id="platform">?</span><br><b>Language:</b> <span id="language">?</span><br><b>Screen:</b> <span id="screen">?</span><br><b>Window:</b> <span id="winsize">?</span></div>
+<h2>HTML Tests</h2><div class="box"><b>Bold</b> <i>Italic</i> <u>Underline</u><p><a href="#bottom">normal link</a></p><form action="#">Text: <input type="text" value="Eevee"><br>Checkbox: <input type="checkbox" checked><br><input type="button" value="Button"><br><select><option>Eevee</option><option>Vaporeon</option><option>Glaceon</option></select></form></div>
+<h2>HTML5</h2><div class="box">Range: <input type="range" min="0" max="100" value="50"><br>Color: <input type="color" value="#ff8800"><br>Date: <input type="date"><br><progress value="60" max="100">60%</progress><details><summary>details test</summary>Hello!</details></div>
+<h2>CSS Tests</h2><div class="box"><div id="rounded">rounded corners?</div><br><div id="shadow">shadow?</div><br><div id="transform">tilted?</div><br><div id="gradient"></div><br><div id="flex"><div>ONE</div><div>TWO</div><div>THREE</div></div></div>
+<h2>JavaScript Features</h2><div class="box" id="results">Tests haven't run.</div>
+<h2>Canvas</h2><div class="box"><canvas id="canvas" width="200" height="100" style="border:1px solid black">Canvas unsupported.</canvas></div>
+<h2>Audio / Video</h2><div class="box"><audio controls>Audio unsupported.</audio><br><video width="160" height="90" controls>Video unsupported.</video></div>
+<h2>Storage / Cookies</h2><div class="box"><button onclick="testStorage()">Test localStorage</button> <span id="storage">Not tested</span><br><button onclick="testCookie()">Test cookies</button> <span id="cookie">Not tested</span></div>
+<h2>Interaction</h2><div class="box"><button onclick="alert('Hello from JavaScript!')">Alert</button> <button onclick="document.getElementById('change').innerHTML='It changed! DOM works.'">Change text</button><p id="change">This text has not changed.</p></div>
+<h2 id="bottom">End of page</h2><div class="box">If you can read this, the browser survived the page! <a href="nova.html">back to Nova's page</a></div>
+<script type="text/javascript">
+function result(n,v){var r=document.getElementById('results');if(r.innerHTML=="Tests haven't run.")r.innerHTML='';r.innerHTML+=n+': <span class="'+(v?'yes':'no')+'">'+(v?'YES':'NO')+'</span><br>';}
+function testStorage(){var x=document.getElementById('storage');try{localStorage.setItem('browser_test','Eevee');x.innerHTML=localStorage.getItem('browser_test')=='Eevee'?'WORKS':'FAILED';}catch(e){x.innerHTML='UNSUPPORTED / BLOCKED';}}
+function testCookie(){var x=document.getElementById('cookie');try{document.cookie='browser_test=eevee';x.innerHTML=document.cookie.indexOf('browser_test')!=-1?'WORKS':'FAILED / BLOCKED';}catch(e){x.innerHTML='ERROR';}}
+function run(){document.getElementById('js').innerHTML='RUNNING';document.getElementById('js').className='yes';try{document.getElementById('ua').innerHTML=navigator.userAgent;}catch(e){}try{document.getElementById('platform').innerHTML=navigator.platform;}catch(e){}try{document.getElementById('language').innerHTML=navigator.language||navigator.userLanguage||'?';}catch(e){}try{document.getElementById('screen').innerHTML=screen.width+' x '+screen.height;}catch(e){}try{document.getElementById('winsize').innerHTML=document.documentElement.clientWidth+' x '+document.documentElement.clientHeight;}catch(e){}
+result('getElementById',!!document.getElementById);result('createElement',!!document.createElement);result('addEventListener',!!window.addEventListener);result('JSON',typeof JSON!='undefined');result('XMLHttpRequest',typeof XMLHttpRequest!='undefined');result('WebSocket',typeof WebSocket!='undefined');result('Worker',typeof Worker!='undefined');result('Promise',typeof Promise!='undefined');result('fetch',typeof fetch!='undefined');result('localStorage',typeof localStorage!='undefined');result('sessionStorage',typeof sessionStorage!='undefined');result('Geolocation',!!navigator.geolocation);result('Touch Events','ontouchstart' in window);result('Device Orientation','DeviceOrientationEvent' in window);result('Gamepad API',!!navigator.getGamepads);result('WebGL',typeof WebGLRenderingContext!='undefined');
+try{var c=document.getElementById('canvas'),x=c.getContext('2d');result('Canvas',!!x);if(x){x.fillStyle='#ff0000';x.fillRect(10,10,50,50);x.fillStyle='#0000ff';x.fillRect(40,30,80,40);x.fillStyle='#000';x.font='12px sans-serif';x.fillText('Canvas works!',10,90);}}catch(e){result('Canvas',false);}result('Audio',!!document.createElement('audio').canPlayType);result('Video',!!document.createElement('video').canPlayType);}
+try{run();}catch(e){var r=document.getElementById('results');if(r)r.innerHTML='<span class="no">JavaScript test crashed: '+e+'</span>';}
+</script></body></html>
